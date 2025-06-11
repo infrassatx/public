@@ -20,9 +20,6 @@ sudo systemctl restart metricbeat.service
 echo "Reiniciando Filebeat..."
 sudo systemctl restart filebeat.service
 
-echo "Reiniciando Heartbeat..."
-sudo systemctl restart heartbeat-elastic.service
-
 echo "Reiniciando Auditbeat..."
 sudo systemctl restart auditbeat.service
 
@@ -36,3 +33,14 @@ chmod +x elastic.sh
 # Passo 5: Executar o script elastic.sh
 echo "Executando o script elastic.sh..."
 ./elastic.sh
+
+# Passo 6: Adicionar entrada no crontab se ainda não existir
+echo "Verificando e adicionando cron para reinício automático..."
+CRON_JOB="0 8 * * 1-5 /opt/script/elastic.sh # RESTART DE BEATS ELASTIC STACK"
+
+# Verifica se o cron já existe antes de adicionar
+( crontab -l 2>/dev/null | grep -F -q "/opt/script/elastic.sh" ) || (
+    crontab -l 2>/dev/null; echo "$CRON_JOB"
+) | crontab -
+
+echo "Agendamento via cron configurado com sucesso!"
