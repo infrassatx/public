@@ -20,6 +20,9 @@ sudo systemctl restart metricbeat.service
 echo "Reiniciando Filebeat..."
 sudo systemctl restart filebeat.service
 
+echo "Reiniciando Heartbeat..."
+sudo systemctl restart heartbeat-elastic.service
+
 echo "Reiniciando Auditbeat..."
 sudo systemctl restart auditbeat.service
 
